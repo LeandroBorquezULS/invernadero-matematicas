@@ -37,28 +37,28 @@ void loop() {
     Serial.println("Error DHT");
   }
   if (temperatura >= 20.0 && temperatura <= 23.0){
-    digitalWrite(rele_calefactor, HIGH);
-    digitalWrite(rele_agua, HIGH);
-  } else if (temperatura <20.0){
     digitalWrite(rele_calefactor, LOW);
-  } else {
     digitalWrite(rele_ventilador, LOW);
+  } else if (temperatura <20.0){
+    digitalWrite(rele_calefactor, HIGH);
+  } else {
+    digitalWrite(rele_ventilador, HIGH);
   }
 
   // Suelo
   digitalWrite(transistor_humedad, HIGH);    // enciende sensor
   delay(1000);                           // breve estabilización
-  int raw = analogRead(sensor_humedad); // 0 seco, 4095 mojado (calibra)
+  int raw = analogRead(sensor_humedad); // 0 mojado, 4095 seco (calibra)
   digitalWrite(transistor_humedad, LOW);     // apaga sensor
   Serial.printf("Suelo raw=%d\n", raw);
 
-  if (raw < 1000){
-    digitalWrite(rele_agua, LOW);  // ON (activo LOW)
+  if (raw > 3500){
+    digitalWrite(rele_agua, HIGH);  // ON
     delay(2000);
-    digitalWrite(rele_agua, HIGH);
+    digitalWrite(rele_agua, LOW);
   } else {
-    digitalWrite(rele_agua, HIGH); // OFF
+    digitalWrite(rele_agua, LOW); // OFF
   }
-  delay(10000);
+  delay(30000);
 }
 
