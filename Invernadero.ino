@@ -36,13 +36,18 @@ void loop() {
   } else {
     Serial.println("Error DHT");
   }
-  if (temperatura >= 20.0 && temperatura <= 23.0){
-    digitalWrite(rele_calefactor, LOW);
-    digitalWrite(rele_ventilador, LOW);
-  } else if (temperatura <20.0){
+  if (temperatura <= 20.0){
     digitalWrite(rele_calefactor, HIGH);
+    Serial.println("calefactor on");
   } else {
+    digitalWrite(rele_calefactor, LOW);
+  }
+
+  if (temperatura >=23.0){
     digitalWrite(rele_ventilador, HIGH);
+    Serial.println("ventilador on");
+  } else {
+    digitalWrite(rele_ventilador, LOW);
   }
 
   // Suelo
@@ -54,6 +59,7 @@ void loop() {
 
   if (raw > 3500){
     digitalWrite(rele_agua, HIGH);  // ON
+    Serial.println("agua on");
     delay(2000);
     digitalWrite(rele_agua, LOW);
   } else {
